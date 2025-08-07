@@ -1,0 +1,11 @@
+- name: Meal Name
+  items:
+    - name: First Item
+      quantity: 1
+      unit: g
+    - name: Second Item
+      quantity: 1
+      unit: g
+    - name: Empty Item
+      quantity: 2
+      unit: pcs

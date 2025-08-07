@@ -1,0 +1,88 @@
+- name: First Item
+  nutrition:
+    carbohydrates:
+      sugar: 1.0
+      unit: g
+      value: 1.0
+    energy:
+      unit: kcal
+      value: 1.0
+    fat:
+      saturated: 1.0
+      unit: g
+      unsaturated: 1.0
+      value: 1.0
+    protein:
+      unit: g
+      value: 1.0
+    salt:
+      unit: g
+      value: 1.0
+  per: 100g
+  type: k
+- name: Second Item
+  nutrition:
+    carbohydrates:
+      sugar: 1.0
+      unit: g
+      value: 1.0
+    energy:
+      unit: kcal
+      value: 1.0
+    fat:
+      saturated: 1.0
+      unit: '1'
+      unsaturated: 1.0
+      value: 1.0
+    protein:
+      unit: g
+      value: 1.0
+    salt:
+      unit: g
+      value: 1.0
+  per: 100g
+  type: k
+- name: Empty Item
+  type: ''
+  per: 100g
+  nutrition:
+    energy:
+      value: null
+      unit: kcal
+    carbohydrates:
+      value: null
+      unit: g
+      sugar: null
+    fat:
+      value: null
+      unit: g
+      saturated: null
+      unsaturated: null
+    protein:
+      value: null
+      unit: g
+    salt:
+      value: null
+      unit: g
+- name: abc
+  type: fasfa
+  per: 100g
+  nutrition:
+    energy:
+      value: 2.0
+      unit: kcal
+    carbohydrates:
+      value: 2.0
+      unit: g
+      sugar: 2.0
+    fat:
+      value: 2.0
+      unit: g
+      saturated: 2.0
+      unsaturated: 2.0
+    protein:
+      value: 4.5
+      unit: g
+    salt:
+      value: null
+      unit: g

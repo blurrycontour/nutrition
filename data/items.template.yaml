@@ -1,0 +1,22 @@
+- name: Name
+  type: Type
+  per: 100g
+  nutrition:
+    energy:
+      value: Value
+      unit: Unit
+    carbohydrates:
+      value: Value
+      unit: Unit
+      sugar: Value
+    fat:
+      value: Value
+      unit: Unit
+      saturated: Value
+      unsaturated: Value
+    protein:
+      value: Value
+      unit: Unit
+    salt:
+      value: Value
+      unit: Unit

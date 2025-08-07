@@ -1,0 +1,53 @@
+import argparse
+
+import nutrition.meal as nutmeal
+import nutrition.item as nutitem
+import nutrition.config as nutcfg
+
+
+def main():
+    """
+    Main entry point for the Nutrition CLI
+    """
+    cli = argparse.ArgumentParser(description="Nutrition CLI")
+    subparsers = cli.add_subparsers(dest="object", help="Available commands")
+
+    # Item subcommand
+    item_parser = subparsers.add_parser("item", help="Item management")
+    item_subparsers = item_parser.add_subparsers(dest="action", help="Actions")
+    # Item add subcommand
+    item_add_parser = item_subparsers.add_parser("add", help="Add a new food item")
+    nutitem.configure_add_parser(item_add_parser)
+    # Item get subcommand
+    item_get_parser = item_subparsers.add_parser("get", help="Get food item information")
+    nutitem.configure_get_parser(item_get_parser)
+    # Item remove subcommand
+    item_remove_parser = item_subparsers.add_parser("remove", help="Remove a food item")
+    nutitem.configure_remove_parser(item_remove_parser)
+    # Item update subcommand
+    item_update_parser = item_subparsers.add_parser("update", help="Update a food item")
+    nutitem.configure_update_parser(item_update_parser)
+
+    # Meal subcommand
+    meal_parser = subparsers.add_parser("meal", help="Meal management")
+    meal_subparsers = meal_parser.add_subparsers(dest="action", help="Actions")
+    # Meal add subcommand
+    meal_add_parser = meal_subparsers.add_parser("add", help="Add a new meal")
+    nutmeal.configure_meal_add_parser(meal_add_parser)
+
+    # Config subcommand
+    config_parser = subparsers.add_parser("config", help="Configuration management")
+    config_subparsers = config_parser.add_subparsers(dest="action", help="Config actions")
+    # Config set subcommand
+    config_set_parser = config_subparsers.add_parser("set", help="Set configuration file path")
+    nutcfg.configure_set_parser(config_set_parser)
+    # Config show subcommand
+    config_get_parser = config_subparsers.add_parser("get", help="Get current configuration")
+    nutcfg.configure_get_parser(config_get_parser)
+
+    args = cli.parse_args()
+
+    if hasattr(args, 'func'):
+        args.func(args)
+    else:
+        cli.print_help()
