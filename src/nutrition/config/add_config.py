@@ -1,19 +1,19 @@
 import os
-from .getset import SETTINGS_FILE
+
 from ..utils import save_data, load_yaml
 from ..vars import SETTINGS_FILE
 
-def configure_create_parser(parser):
-    """Configure arguments for config create command"""
+def configure_add_parser(parser):
+    """Configure arguments for config add command"""
     parser.add_argument("--name", "-n", required=True, help="Give a name of the configuration")
     parser.add_argument("--set-current", "-s", required=False, help="Set this configuration as the current one", action="store_true")
-    parser.set_defaults(func=handle_create)
+    parser.set_defaults(func=handle_add)
 
-def handle_create(args):
-    """Handle config create command"""
-    create(args.name, args.set_current)
+def handle_add(args):
+    """Handle config add command"""
+    add_config(args.name, args.set_current)
 
-def create(name, set_current):
+def add_config(name, set_current):
     """Create a new configuration file"""
     if os.path.exists(SETTINGS_FILE):
         settings = load_yaml(SETTINGS_FILE)

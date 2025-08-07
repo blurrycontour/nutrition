@@ -1,4 +1,4 @@
-from .getset import configure_get_parser, get_config
-from .getset import configure_set_parser
-from .create import configure_create_parser
-from .remove import configure_remove_parser
+from .get_config import configure_get_parser, get_config
+from .set_config import configure_set_parser
+from .add_config import configure_add_parser
+from .remove_config import configure_remove_parser
