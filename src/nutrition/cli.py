@@ -3,6 +3,7 @@ import argparse
 import nutrition.meal as nutmeal
 import nutrition.item as nutitem
 import nutrition.config as nutcfg
+from .__version__ import get_version
 
 
 def main():
@@ -10,6 +11,7 @@ def main():
     Main entry point for the Nutrition CLI
     """
     cli = argparse.ArgumentParser(description="Nutrition CLI")
+    cli.add_argument("--version", "-v", action="version", version=get_version())
     subparsers = cli.add_subparsers(dest="object", help="Available commands")
 
 
