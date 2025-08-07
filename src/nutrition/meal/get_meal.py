@@ -19,7 +19,7 @@ def get_meal(name=None, verbose=1):
                     print_meal(meal)
                 return meal
         print(f"❌ Meal '{name}' not found")
-        return None
+        return dict()
     all_meals = [meal["name"] for meal in meals]
     print(f"[Found ({len(all_meals)}) meals]")
     if all_meals:
