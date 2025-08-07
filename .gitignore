@@ -12,6 +12,7 @@ wheels/
 # data yaml files
 data/*.yaml
 data/*.yml
+data/**/*
 !data/*.template.yaml
 !data/*.template.yml
 

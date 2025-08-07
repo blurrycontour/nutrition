@@ -3,3 +3,4 @@ configs:
   - name: Personal
     item: data/items.yaml
     meal: data/meals.yaml
+    diet: data/diets.yaml

@@ -1,0 +1,15 @@
+# Diet plan template
+- name: "Weekly Diet Plan"
+  description: "A balanced weekly diet plan"
+  meals:
+    - name: "Healthy Breakfast"
+      day: "Monday"
+      type: "breakfast"
+    - name: "Light Lunch"
+      day: "Monday"
+      type: "lunch"
+    - name: "Protein Dinner"
+      day: "Monday"
+      type: "dinner"
+    - name: "Fruit Snack"
+      type: "snack"

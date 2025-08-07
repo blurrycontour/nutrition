@@ -3,6 +3,7 @@ import argparse
 import nutrition.meal as nutmeal
 import nutrition.item as nutitem
 import nutrition.config as nutcfg
+import nutrition.diet as nutdiet
 from .__version__ import get_version
 
 
@@ -50,6 +51,23 @@ def main():
     # Meal calculate subcommand
     meal_calculate_parser = meal_subparsers.add_parser("calculate", aliases=["calc"], help="Calculate nutrition for a meal")
     nutmeal.configure_calculate_parser(meal_calculate_parser)
+
+
+    # Diet subcommand
+    diet_parser = subparsers.add_parser("diet", aliases=["diets"], help="Diet plan management")
+    diet_subparsers = diet_parser.add_subparsers(dest="action", help="Actions")
+    # Diet add subcommand
+    diet_add_parser = diet_subparsers.add_parser("add", aliases=["create"], help="Add a new diet plan")
+    nutdiet.configure_add_parser(diet_add_parser)
+    # Diet get subcommand
+    diet_get_parser = diet_subparsers.add_parser("get", aliases=["show"], help="Get diet plan information")
+    nutdiet.configure_get_parser(diet_get_parser)
+    # Diet remove subcommand
+    diet_remove_parser = diet_subparsers.add_parser("remove", aliases=["delete", "rm"], help="Remove a diet plan")
+    nutdiet.configure_remove_parser(diet_remove_parser)
+    # Diet update subcommand
+    diet_update_parser = diet_subparsers.add_parser("update", aliases=["edit"], help="Update a diet plan")
+    nutdiet.configure_update_parser(diet_update_parser)
 
 
     # Config subcommand

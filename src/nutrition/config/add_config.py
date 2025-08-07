@@ -33,7 +33,8 @@ def add_config(name, set_current, folder):
     config = {
         "name": name,
         "item": os.path.join(os.getcwd(), folder, "items.yaml"),
-        "meal": os.path.join(os.getcwd(), folder, "meals.yaml")
+        "meal": os.path.join(os.getcwd(), folder, "meals.yaml"),
+        "diet": os.path.join(os.getcwd(), folder, "diets.yaml")
     }
     settings["configs"].append(config)
     if set_current:

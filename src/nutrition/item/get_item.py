@@ -21,7 +21,10 @@ def get_item(name=None, verbose=1):
         return None
     all_items = [item["name"] for item in items]
     print(f"[Found ({len(all_items)}) items]")
-    print("  "+"\n  ".join(all_items))
+    if all_items:
+        print("  " + "\n  ".join(all_items))
+    else:
+        print("  No items found")
     return all_items
 
 
