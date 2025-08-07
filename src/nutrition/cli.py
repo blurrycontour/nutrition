@@ -55,8 +55,8 @@ def main():
     # Config subcommand
     config_parser = subparsers.add_parser("config", help="Configuration management")
     config_subparsers = config_parser.add_subparsers(dest="action", help="Config actions")
-    # Config create subcommand
-    config_add_parser = config_subparsers.add_parser("create", help="Create a new configuration")
+    # Config add subcommand
+    config_add_parser = config_subparsers.add_parser("add", help="Create a new configuration")
     nutcfg.configure_add_parser(config_add_parser)
     # Config get subcommand
     config_get_parser = config_subparsers.add_parser("get", help="Get current configuration")
