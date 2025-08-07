@@ -33,7 +33,8 @@ def handle_get(args):
 
 def get(verbose=2):
     """Config get command"""
-    assert os.path.exists(SETTINGS_FILE), "❌ No configuration file set. Use 'nut config set --file <filepath>' to set one."
+    if not os.path.exists(SETTINGS_FILE):
+        vprint("❌ No configuration file set.\nUse 'nut config set --file <filepath>' to set one.", verbose)
 
     try:
         vprint(f"Reading settings from {SETTINGS_FILE}", verbose)
