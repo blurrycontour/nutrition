@@ -1,4 +1,5 @@
-from .load import load
+import re
+
 from ..item.load import load as load_items
 from .get_meal import get_meal
 
@@ -33,10 +34,10 @@ def calculate_meal(meal_name):
 
     print(f"Calculating total nutrition for '{meal_name}'")
     print("-" * 50)
-    print(f"Items in meal: {len(target_meal['items'])}\n")
+    print(f"Items in meal: {len(target_meal['items'])}\n") # type: ignore
 
     # Calculate nutrition for each item in the meal
-    for meal_item in target_meal['items']:
+    for meal_item in target_meal['items']:  # type: ignore
         item_name = meal_item['name']
         quantity = meal_item['quantity']
         unit = meal_item['unit']
@@ -108,7 +109,6 @@ def calculate_meal(meal_name):
 
 def get_base_amount(per_string):
     """Extract the base amount from the 'per' field (e.g., '100g' -> 100)."""
-    import re
     match = re.search(r'(\d+)', per_string)
     return float(match.group(1)) if match else 100.0
 

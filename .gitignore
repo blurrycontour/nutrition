@@ -8,3 +8,15 @@ wheels/
 
 # Virtual environments
 .venv
+
+# data yaml files
+data/*.yaml
+data/*.yml
+!data/*.template.yaml
+!data/*.template.yml
+
+# config yaml files
+config/*.yaml
+config/*.yml
+!config/*.template.yaml
+!config/*.template.yml
