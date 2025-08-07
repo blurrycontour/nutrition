@@ -29,7 +29,7 @@ def add_config(name, set_current, folder):
     assert name, "Configuration name cannot be empty."
     assert not any(cfg['name'] == name for cfg in settings['configs']), f"Configuration '{name}' already exists."
     if not folder:
-        folder = f"{name}-data"
+        folder = f".data-{name}"
     config = {
         "name": name,
         "item": os.path.join(os.getcwd(), folder, "items.yaml"),
