@@ -25,3 +25,9 @@ def vprint(text, verbose=0):
     """Print text if verbose level is sufficient."""
     if verbose > 0:
         print(text)
+
+def print_yaml(data:dict, lines=False):
+    """Print YAML data."""
+    if lines: print('-'*30)
+    print(yaml.dump(data, sort_keys=False, allow_unicode=True, indent=2))
+    if lines: print('-'*30)

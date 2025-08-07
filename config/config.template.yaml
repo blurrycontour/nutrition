@@ -1,2 +1,5 @@
-item: data/items.template.yaml
-meal: data/meals.template.yaml
+current: null
+configs:
+  - name: Personal
+    item: data/items.yaml
+    meal: data/meals.yaml

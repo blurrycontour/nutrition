@@ -1,15 +1,13 @@
-import json
 import os
-import yaml
+import sys
 from pathlib import Path
-from nutrition.utils import save_data, load_yaml, vprint
 
-# Default config file location in user's home directory
-SETTINGS_FILE = os.getenv("NUTRITION_CONFIG", Path.home() / ".nutcfg.yaml")
+from ..utils import save_data, load_yaml, vprint, print_yaml
+from ..vars import SETTINGS_FILE
 
 def configure_set_parser(parser):
     """Configure arguments for config set command"""
-    parser.add_argument("--file", "-f", required=True, help="Path to the configuration file")
+    parser.add_argument("--name", "-n", required=True, help="Name of the configuration to be set")
     parser.set_defaults(func=handle_set)
 
 def configure_get_parser(parser):
@@ -19,39 +17,56 @@ def configure_get_parser(parser):
 
 def handle_set(args):
     """Handle config set command"""
-    config_file_path = args.file
-    assert os.path.exists(config_file_path), f"❌ Configuration file '{config_file_path}' does not exist."
-    settings = {"config": os.path.abspath(config_file_path)}
+    set_config(args.name)
+
+def set_config(name):
+    """Set the configuration."""
+    if not os.path.exists(SETTINGS_FILE):
+        print("❌ No configurations created.\nUse 'nut config create --name <my-config>' to create one.")
+        sys.exit(1)
+
+    settings = load_yaml(SETTINGS_FILE)
+    # Check if configuration exists
+    config_exists = any(cfg['name'] == name for cfg in settings['configs'])
+    assert config_exists, f"❌ Configuration '{name}' does not exist."
+    settings["current"] = name
     save_data(settings, SETTINGS_FILE)
 
-    print(f"✔️ Configuration file set to: {os.path.abspath(config_file_path)}")
+    print(f"✔️ Configuration set to: {name}")
     print(f"✔️ Settings saved in: {SETTINGS_FILE}")
 
 def handle_get(args):
     """Handle config get command"""
-    get(args.verbose)
+    get_config(args.verbose)
 
-def get(verbose=2):
+def get_config(verbose=2):
     """Config get command"""
     if not os.path.exists(SETTINGS_FILE):
-        vprint("❌ No configuration file set.\nUse 'nut config set --file <filepath>' to set one.", verbose)
+        print("❌ No configurations created.\nUse 'nut config create --name <my-config>' to create one.")
+        sys.exit(1)
 
-    try:
-        vprint(f"Reading settings from {SETTINGS_FILE}", verbose)
-        settings = load_yaml(SETTINGS_FILE)
-        config_file = settings.get('config')
-        vprint(f"Current config file: {config_file}", verbose)
+    vprint(f"Reading settings from {SETTINGS_FILE}", verbose)
+    settings = load_yaml(SETTINGS_FILE)
+    current = settings.get("current", None)
+    if not current:
+        print("❌ No configuration set.\nUse 'nut config set --name <my-config>' to set one.")
+        print_yaml(settings, True)
+        sys.exit(1)
 
-        # Show the contents of the config file if it exists
-        if verbose == 2:
-            if config_file and os.path.exists(config_file):
-                config_contents = load_yaml(config_file)
-                print(json.dumps(config_contents, indent=2))
-            else:
-                print(f"❌ Configuration file '{config_file}' does not exist.")
+    # Find the current config
+    config = None
+    for cfg in settings['configs']:
+        if cfg['name'] == current:
+            config = cfg
+            break
 
-        return config_file
-    except yaml.YAMLError as e:
-        print(f"❌ Error reading configuration: {e}")
-    except Exception as e:
-        print(f"❌ Error: {e}")
+    if not config:
+        print(f"❌ Current configuration '{current}' not found in configs.")
+        sys.exit(1)
+
+    # Show the contents of the config file if it exists
+    if verbose > 0:
+        print(f"Current config: '{current}'")
+        print_yaml(config, lines=True)
+
+    return config
