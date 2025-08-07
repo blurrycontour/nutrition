@@ -18,6 +18,9 @@ def load_existing_data(filename):
 
 def save_data(data, filename):
     """Save data to YAML file."""
+    # create file if not exist
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
+
     with open(filename, 'w', encoding='utf-8') as file:
         yaml.dump(data, file, sort_keys=False, allow_unicode=True, indent=2)
 

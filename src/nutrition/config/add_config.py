@@ -6,14 +6,15 @@ from ..vars import SETTINGS_FILE
 def configure_add_parser(parser):
     """Configure arguments for config add command"""
     parser.add_argument("--name", "-n", required=True, help="Give a name of the configuration")
+    parser.add_argument("--folder", "-f", help="Name of folder of data files")
     parser.add_argument("--set-current", "-s", required=False, help="Set this configuration as the current one", action="store_true")
     parser.set_defaults(func=handle_add)
 
 def handle_add(args):
     """Handle config add command"""
-    add_config(args.name, args.set_current)
+    add_config(args.name, args.set_current, args.folder)
 
-def add_config(name, set_current):
+def add_config(name, set_current, folder):
     """Create a new configuration file"""
     if os.path.exists(SETTINGS_FILE):
         settings = load_yaml(SETTINGS_FILE)
@@ -27,10 +28,12 @@ def add_config(name, set_current):
     # Create and add the new configuration
     assert name, "Configuration name cannot be empty."
     assert not any(cfg['name'] == name for cfg in settings['configs']), f"Configuration '{name}' already exists."
+    if not folder:
+        folder = f"{name}-data"
     config = {
         "name": name,
-        "item": f"{os.path.join(os.getcwd(), name)}-data/items.yaml",
-        "meal": f"{os.path.join(os.getcwd(), name)}-data/meals.yaml"
+        "item": os.path.join(os.getcwd(), folder, "items.yaml"),
+        "meal": os.path.join(os.getcwd(), folder, "meals.yaml")
     }
     settings["configs"].append(config)
     if set_current:

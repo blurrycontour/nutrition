@@ -7,16 +7,17 @@ from ..vars import SETTINGS_FILE
 
 def configure_get_parser(parser):
     """Configure arguments for config get command"""
+    parser.add_argument("--all", "-a", action="store_true", help="Show all configurations")
     parser.add_argument("--verbose", "-v", type=int, default=2, help="Show configuration contents")
     parser.set_defaults(func=handle_get)
 
 
 def handle_get(args):
     """Handle config get command"""
-    get_config(args.verbose)
+    get_config(args.verbose, args.all)
 
 
-def get_config(verbose=2):
+def get_config(verbose=2, all_configs=False):
     """Config get command"""
     if not os.path.exists(SETTINGS_FILE):
         print("❌ No configurations created.\nUse 'nut config create --name <my-config>' to create one.")
@@ -45,5 +46,9 @@ def get_config(verbose=2):
     if verbose > 0:
         print(f"Current config: '{current}'")
         print_yaml(config, lines=True)
+
+    if all_configs:
+        print("\nAll configurations:")
+        print_yaml(settings, lines=True)
 
     return config

@@ -19,16 +19,16 @@ def main():
     item_parser = subparsers.add_parser("item", aliases=["items"], help="Item management")
     item_subparsers = item_parser.add_subparsers(dest="action", help="Actions")
     # Item add subcommand
-    item_add_parser = item_subparsers.add_parser("add", help="Add a new food item")
+    item_add_parser = item_subparsers.add_parser("add", aliases=["create"], help="Add a new food item")
     nutitem.configure_add_parser(item_add_parser)
     # Item get subcommand
-    item_get_parser = item_subparsers.add_parser("get", help="Get food item information")
+    item_get_parser = item_subparsers.add_parser("get", aliases=["show"], help="Get food item information")
     nutitem.configure_get_parser(item_get_parser)
     # Item remove subcommand
-    item_remove_parser = item_subparsers.add_parser("remove", help="Remove a food item")
+    item_remove_parser = item_subparsers.add_parser("remove", aliases=["delete", "rm"], help="Remove a food item")
     nutitem.configure_remove_parser(item_remove_parser)
     # Item update subcommand
-    item_update_parser = item_subparsers.add_parser("update", help="Update a food item")
+    item_update_parser = item_subparsers.add_parser("update", aliases=["edit"], help="Update a food item")
     nutitem.configure_update_parser(item_update_parser)
 
 
@@ -36,19 +36,19 @@ def main():
     meal_parser = subparsers.add_parser("meal", aliases=["meals"], help="Meal management")
     meal_subparsers = meal_parser.add_subparsers(dest="action", help="Actions")
     # Meal add subcommand
-    meal_add_parser = meal_subparsers.add_parser("add", help="Add a new meal")
+    meal_add_parser = meal_subparsers.add_parser("add", aliases=["create"], help="Add a new meal")
     nutmeal.configure_add_parser(meal_add_parser)
     # Meal get subcommand
-    meal_get_parser = meal_subparsers.add_parser("get", help="Get meal information")
+    meal_get_parser = meal_subparsers.add_parser("get", aliases=["show"], help="Get meal information")
     nutmeal.configure_get_parser(meal_get_parser)
     # Meal remove subcommand
-    meal_remove_parser = meal_subparsers.add_parser("remove", help="Remove a meal")
+    meal_remove_parser = meal_subparsers.add_parser("remove", aliases=["delete", "rm"], help="Remove a meal")
     nutmeal.configure_remove_parser(meal_remove_parser)
     # Meal update subcommand
-    meal_update_parser = meal_subparsers.add_parser("update", help="Update a meal")
+    meal_update_parser = meal_subparsers.add_parser("update", aliases=["edit"], help="Update a meal")
     nutmeal.configure_update_parser(meal_update_parser)
     # Meal calculate subcommand
-    meal_calculate_parser = meal_subparsers.add_parser("calculate", help="Calculate nutrition for a meal")
+    meal_calculate_parser = meal_subparsers.add_parser("calculate", aliases=["calc"], help="Calculate nutrition for a meal")
     nutmeal.configure_calculate_parser(meal_calculate_parser)
 
 
@@ -56,16 +56,16 @@ def main():
     config_parser = subparsers.add_parser("config", help="Configuration management")
     config_subparsers = config_parser.add_subparsers(dest="action", help="Config actions")
     # Config add subcommand
-    config_add_parser = config_subparsers.add_parser("add", help="Create a new configuration")
+    config_add_parser = config_subparsers.add_parser("add", aliases=["create"], help="Create a new configuration")
     nutcfg.configure_add_parser(config_add_parser)
     # Config get subcommand
-    config_get_parser = config_subparsers.add_parser("get", help="Get current configuration")
+    config_get_parser = config_subparsers.add_parser("get", aliases=["show"], help="Get current configuration")
     nutcfg.configure_get_parser(config_get_parser)
     # Config set subcommand
     config_set_parser = config_subparsers.add_parser("set", help="Set configuration")
     nutcfg.configure_set_parser(config_set_parser)
     # Config remove subcommand
-    config_remove_parser = config_subparsers.add_parser("remove", help="Remove a configuration")
+    config_remove_parser = config_subparsers.add_parser("remove", aliases=["delete", "rm"], help="Remove a configuration")
     nutcfg.configure_remove_parser(config_remove_parser)
 
     args = cli.parse_args()
