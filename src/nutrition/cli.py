@@ -68,6 +68,9 @@ def main():
     # Diet update subcommand
     diet_update_parser = diet_subparsers.add_parser("update", aliases=["edit"], help="Update a diet plan")
     nutdiet.configure_update_parser(diet_update_parser)
+    # Diet calculate subcommand
+    diet_calculate_parser = diet_subparsers.add_parser("calculate", aliases=["calc"], help="Calculate total nutrition for a diet plan")
+    nutdiet.configure_calculate_parser(diet_calculate_parser)
 
 
     # Config subcommand
