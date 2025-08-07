@@ -29,8 +29,8 @@ def add_config(name, set_current):
     assert not any(cfg['name'] == name for cfg in settings['configs']), f"Configuration '{name}' already exists."
     config = {
         "name": name,
-        "item": f"{name}-data/items.yaml",
-        "meal": f"{name}-data/meals.yaml"
+        "item": f"{os.path.join(os.getcwd(), name)}-data/items.yaml",
+        "meal": f"{os.path.join(os.getcwd(), name)}-data/meals.yaml"
     }
     settings["configs"].append(config)
     if set_current:
