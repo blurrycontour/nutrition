@@ -151,7 +151,7 @@ def update_item(item_name):
             updated_item = get_user_input(item)
             items[i] = updated_item
             save_data(items, file)
-            print(f"✓ Successfully updated '{item_name}' in {file}")
+            print(f"✔️ Successfully updated '{item_name}' in {file}")
             return updated_item
 
     print(f"❌ Item '{item_name}' not found in {file}")

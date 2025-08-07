@@ -95,4 +95,4 @@ def add_item():
     existing_data.append(new_item)
     save_data(existing_data, file)
 
-    print(f"\n✓ Successfully added '{new_item['name']}' to {file}")
+    print(f"\n✔️ Successfully added '{new_item['name']}' to {file}")

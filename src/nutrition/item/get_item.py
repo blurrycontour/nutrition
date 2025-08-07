@@ -9,13 +9,14 @@ def handle_get(args):
     """Handle item get command"""
     get_item(args.name)
 
-def get_item(name=None):
+def get_item(name=None, verbose=1):
     """Retrieve item data from the specified YAML file."""
     items, _ = load()
     if name:
         for item in items:
             if item["name"] == name:
-                print_item(item, indent=3)
+                if verbose > 0:
+                    print_item(item, indent=3)
                 return item
         return None
     all_items = [item["name"] for item in items]

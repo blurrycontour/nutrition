@@ -24,8 +24,8 @@ def handle_set(args):
     settings = {"config": os.path.abspath(config_file_path)}
     save_data(settings, SETTINGS_FILE)
 
-    print(f"✓ Configuration file set to: {os.path.abspath(config_file_path)}")
-    print(f"✓ Settings saved in: {SETTINGS_FILE}")
+    print(f"✔️ Configuration file set to: {os.path.abspath(config_file_path)}")
+    print(f"✔️ Settings saved in: {SETTINGS_FILE}")
 
 def handle_get(args):
     """Handle config get command"""

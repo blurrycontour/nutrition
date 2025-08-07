@@ -12,8 +12,9 @@ def main():
     cli = argparse.ArgumentParser(description="Nutrition CLI")
     subparsers = cli.add_subparsers(dest="object", help="Available commands")
 
+
     # Item subcommand
-    item_parser = subparsers.add_parser("item", help="Item management")
+    item_parser = subparsers.add_parser("item", aliases=["items"], help="Item management")
     item_subparsers = item_parser.add_subparsers(dest="action", help="Actions")
     # Item add subcommand
     item_add_parser = item_subparsers.add_parser("add", help="Add a new food item")
@@ -28,12 +29,26 @@ def main():
     item_update_parser = item_subparsers.add_parser("update", help="Update a food item")
     nutitem.configure_update_parser(item_update_parser)
 
+
     # Meal subcommand
-    meal_parser = subparsers.add_parser("meal", help="Meal management")
+    meal_parser = subparsers.add_parser("meal", aliases=["meals"], help="Meal management")
     meal_subparsers = meal_parser.add_subparsers(dest="action", help="Actions")
     # Meal add subcommand
     meal_add_parser = meal_subparsers.add_parser("add", help="Add a new meal")
-    nutmeal.configure_meal_add_parser(meal_add_parser)
+    nutmeal.configure_add_parser(meal_add_parser)
+    # Meal get subcommand
+    meal_get_parser = meal_subparsers.add_parser("get", help="Get meal information")
+    nutmeal.configure_get_parser(meal_get_parser)
+    # Meal remove subcommand
+    meal_remove_parser = meal_subparsers.add_parser("remove", help="Remove a meal")
+    nutmeal.configure_remove_parser(meal_remove_parser)
+    # Meal update subcommand
+    meal_update_parser = meal_subparsers.add_parser("update", help="Update a meal")
+    nutmeal.configure_update_parser(meal_update_parser)
+    # Meal calculate subcommand
+    meal_calculate_parser = meal_subparsers.add_parser("calculate", help="Calculate nutrition for a meal")
+    nutmeal.configure_calculate_parser(meal_calculate_parser)
+
 
     # Config subcommand
     config_parser = subparsers.add_parser("config", help="Configuration management")
@@ -44,6 +59,7 @@ def main():
     # Config show subcommand
     config_get_parser = config_subparsers.add_parser("get", help="Get current configuration")
     nutcfg.configure_get_parser(config_get_parser)
+
 
     args = cli.parse_args()
 

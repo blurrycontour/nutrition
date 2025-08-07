@@ -1,88 +1,88 @@
-- name: First Item
-  nutrition:
-    carbohydrates:
-      sugar: 1.0
-      unit: g
-      value: 1.0
-    energy:
-      unit: kcal
-      value: 1.0
-    fat:
-      saturated: 1.0
-      unit: g
-      unsaturated: 1.0
-      value: 1.0
-    protein:
-      unit: g
-      value: 1.0
-    salt:
-      unit: g
-      value: 1.0
-  per: 100g
-  type: k
-- name: Second Item
-  nutrition:
-    carbohydrates:
-      sugar: 1.0
-      unit: g
-      value: 1.0
-    energy:
-      unit: kcal
-      value: 1.0
-    fat:
-      saturated: 1.0
-      unit: '1'
-      unsaturated: 1.0
-      value: 1.0
-    protein:
-      unit: g
-      value: 1.0
-    salt:
-      unit: g
-      value: 1.0
-  per: 100g
-  type: k
-- name: Empty Item
-  type: ''
+- name: Cottage Cheese
+  type: Cheese
   per: 100g
   nutrition:
     energy:
-      value: null
+      value: 100.0
       unit: kcal
     carbohydrates:
-      value: null
+      value: 1.7
       unit: g
-      sugar: null
+      sugar: 1.7
     fat:
-      value: null
+      value: 4.0
       unit: g
-      saturated: null
+      saturated: 2.6
       unsaturated: null
     protein:
-      value: null
+      value: 14.0
       unit: g
     salt:
-      value: null
+      value: 0.8
       unit: g
-- name: abc
-  type: fasfa
+- name: Herrgård Cheese
+  type: Cheese
   per: 100g
   nutrition:
     energy:
-      value: 2.0
+      value: 360.0
       unit: kcal
     carbohydrates:
-      value: 2.0
+      value: 0.0
       unit: g
-      sugar: 2.0
+      sugar: 0.0
     fat:
-      value: 2.0
+      value: 28.0
       unit: g
-      saturated: 2.0
-      unsaturated: 2.0
+      saturated: 18.0
+      unsaturated: null
     protein:
-      value: 4.5
+      value: 26.0
       unit: g
     salt:
-      value: null
+      value: 1.2
+      unit: g
+- name: Barkis
+  type: Bread
+  per: 100g
+  nutrition:
+    energy:
+      value: 246.0
+      unit: kcal
+    carbohydrates:
+      value: 44.0
+      unit: g
+      sugar: 1.3
+    fat:
+      value: 3.4
+      unit: g
+      saturated: 0.7
+      unsaturated: null
+    protein:
+      value: 8.7
+      unit: g
+    salt:
+      value: 1.3
+      unit: g
+- name: Jam
+  type: Jam
+  per: 100g
+  nutrition:
+    energy:
+      value: 183.0
+      unit: kcal
+    carbohydrates:
+      value: 45.0
+      unit: g
+      sugar: 45.0
+    fat:
+      value: 0.0
+      unit: g
+      saturated: 0.0
+      unsaturated: null
+    protein:
+      value: 0.2
+      unit: g
+    salt:
+      value: 0.03
       unit: g
