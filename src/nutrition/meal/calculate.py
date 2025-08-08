@@ -1,7 +1,7 @@
 import re
 
 from ..console import *
-from ..item.load import load as load_items
+from ..loader import load
 from .get_meal import get_meal
 
 def configure_calculate_parser(parser):
@@ -15,7 +15,7 @@ def handle_calculate(args):
 
 def calculate_meal(meal_name):
     """Calculate the total nutrition values for the specified meal."""
-    items, _ = load_items()
+    items, _ = load("item")
     # Find the specified meal
     target_meal = get_meal(name=meal_name, verbose=0)
     # Create a lookup dictionary for items
