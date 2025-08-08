@@ -1,6 +1,8 @@
 """Script to add a new diet to a YAML file"""
+from ..console import print_section_title, print_success
 from ..utils import save_data
-from .load import load
+from ..loader import load
+
 
 def configure_add_parser(parser):
     """Configure arguments for diet add command"""
@@ -13,7 +15,7 @@ def handle_add(_args):
 def get_user_input():
     """Collect user input for diet creation."""
     title = "Add a new diet plan 🥗"
-    print(f"\n{title}\n{'=' * len(title)}")
+    print_section_title(title)
 
     # Basic information
     name = input("Diet name: ").strip()
@@ -66,7 +68,7 @@ def get_user_input():
 
 def add_diet():
     """Main function to add a new diet."""
-    existing_data, file = load()
+    existing_data, file = load("diet")
     new_diet = get_user_input()
 
     if new_diet is None:
@@ -75,5 +77,5 @@ def add_diet():
     existing_data.append(new_diet)
     save_data(existing_data, file)
 
-    print(f"\n✔️ Successfully added diet '{new_diet['name']}' to {file}")
-    print(f"✔️ Diet contains {len(new_diet['meals'])} meals")
+    print_success(f"Successfully added diet '{new_diet['name']}' to {file}")
+    print_success(f"Diet contains {len(new_diet['meals'])} meals")

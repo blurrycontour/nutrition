@@ -1,6 +1,7 @@
 import os
 import sys
 
+from ..console import print_error, print_success, print_warning
 from ..utils import load_yaml, save_data
 from ..vars import SETTINGS_FILE
 
@@ -16,7 +17,7 @@ def handle_remove(args):
 def remove_config(name):
     """Remove a configuration."""
     if not os.path.exists(SETTINGS_FILE):
-        print("❌ No configurations created.\nUse 'nut config create --name <my-config>' to create one.")
+        print_error("No configurations created.\nUse 'nut config create --name <my-config>' to create one.")
         sys.exit(1)
 
     settings = load_yaml(SETTINGS_FILE)
@@ -29,7 +30,7 @@ def remove_config(name):
             break
 
     if config_to_remove is None:
-        print(f"❌ Configuration '{name}' does not exist.")
+        print_error(f"Configuration '{name}' does not exist.")
         available_configs = [cfg['name'] for cfg in settings['configs']]
         if available_configs:
             print(f"Available configurations: {', '.join(available_configs)}")
@@ -41,11 +42,11 @@ def remove_config(name):
     # If we're removing the current configuration, unset it
     if settings.get("current") == name:
         settings["current"] = None
-        print(f"⚠️  Removed current configuration '{name}'. No configuration is now set.")
+        print_warning(f"Removed current configuration '{name}'. No configuration is now set.")
         if settings['configs']:
             available_configs = [cfg['name'] for cfg in settings['configs']]
             print(f"Available configurations: {', '.join(available_configs)}")
             print("Use 'nut config set --name <config-name>' to set a configuration.")
 
     save_data(settings, SETTINGS_FILE)
-    print(f"✔️ Successfully removed configuration '{name}' from {SETTINGS_FILE}")
+    print_success(f"Successfully removed configuration '{name}' from {SETTINGS_FILE}")

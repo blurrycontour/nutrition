@@ -1,5 +1,6 @@
 import re
 
+from ..console import *
 from ..item.load import load as load_items
 from .get_meal import get_meal
 
@@ -32,8 +33,7 @@ def calculate_meal(meal_name):
     missing_items = []
     calculated_items = []
 
-    print(f"Calculating total nutrition for '{meal_name}'")
-    print("-" * 50)
+    print_header(f"Calculating total nutrition for '{meal_name}'", '=')
     print(f"Items in meal: {len(target_meal['items'])}\n") # type: ignore
 
     # Calculate nutrition for each item in the meal
@@ -44,7 +44,7 @@ def calculate_meal(meal_name):
 
         if item_name not in item_lookup:
             missing_items.append(item_name)
-            print(f"⚠️  {format_number(quantity)} {unit} of {item_name} - NOT FOUND")
+            print_warning(f"{format_number(quantity)} {unit} of {item_name} - NOT FOUND")
             continue
 
         food_item = item_lookup[item_name]
@@ -55,7 +55,7 @@ def calculate_meal(meal_name):
         multiplier = calculate_multiplier(quantity, unit, base_amount)
 
         if multiplier is None:
-            print(f"⚠️  {format_number(quantity)} {unit} of {item_name} - UNIT CONVERSION ISSUE")
+            print_warning(f"{format_number(quantity)} {unit} of {item_name} - UNIT CONVERSION ISSUE")
             continue
 
         # Add to totals
@@ -91,19 +91,19 @@ def calculate_meal(meal_name):
         print(f"✔️ {format_number(quantity)} {unit} of {item_name} (×{format_number(multiplier)})")
 
     # Display results
-    print("-" * 50)
-    print("-" * 50)
-    print("💯 Total Nutrition Value\n")
+    print_separator()
+    print_separator()
+    print_subsection_title("💯 Total Nutrition Value")
+    print()
     print_nutrition_totals(totals)
 
     if missing_items:
-        print(f"\n⚠️  Missing nutrition data for {len(missing_items)} items:")
+        print_warning(f"Missing nutrition data for {len(missing_items)} items:")
         for item in missing_items:
             print(f"   - {item}")
-    print("-" * 50)
+    print_separator()
 
-
-    print(f"\n✔️ Calculated nutrition for {len(calculated_items)} items")
+    print_success(f"Calculated nutrition for {len(calculated_items)} items")
 
     return totals
 
@@ -140,20 +140,6 @@ def calculate_multiplier(quantity, unit, base_amount):
     # Calculate multiplier based on base amount (usually 100g)
     return quantity_in_grams / base_amount
 
-def format_number(value):
-    """Format a number to remove trailing zeros."""
-    if value is None:
-        return "-"
-    if isinstance(value, float):
-        return f"{value:.2f}".rstrip('0').rstrip('.')
-    return str(value)
-
-def format_with_unit(value, unit):
-    """Format value with unit, or just '-' if value is None."""
-    if value is None or value == 0:
-        return "-"
-    formatted_value = format_number(value)
-    return f"{formatted_value} {unit}"
 
 def print_nutrition_totals(totals):
     """Print the total nutrition values in a formatted way."""
@@ -161,21 +147,21 @@ def print_nutrition_totals(totals):
     sub_indent = "    "
 
     energy_formatted = format_with_unit(totals['energy']['value'], totals['energy']['unit'])
-    print(f"{indent}Energy: {energy_formatted}")
+    print_item_detail("Energy", energy_formatted, indent)
 
     carbs_formatted = format_with_unit(totals['carbohydrates']['value'], totals['carbohydrates']['unit'])
     sugar_formatted = format_with_unit(totals['carbohydrates']['sugar'], totals['carbohydrates']['unit'])
-    print(f"{indent}Carbohydrates: {carbs_formatted}")
-    print(f"{sub_indent}Sugar: {sugar_formatted}")
+    print_item_detail("Carbohydrates", carbs_formatted, indent)
+    print_sub_item_detail("Sugar", sugar_formatted, sub_indent)
 
     fat_formatted = format_with_unit(totals['fat']['value'], totals['fat']['unit'])
     fat_sat_formatted = format_with_unit(totals['fat']['saturated'], totals['fat']['unit'])
     fat_unsat_formatted = format_with_unit(totals['fat']['unsaturated'], totals['fat']['unit'])
-    print(f"{indent}Fat: {fat_formatted}")
-    print(f"{sub_indent}Saturated: {fat_sat_formatted}")
-    print(f"{sub_indent}Unsaturated: {fat_unsat_formatted}")
+    print_item_detail("Fat", fat_formatted, indent)
+    print_sub_item_detail("Saturated", fat_sat_formatted, sub_indent)
+    print_sub_item_detail("Unsaturated", fat_unsat_formatted, sub_indent)
 
     protein_formatted = format_with_unit(totals['protein']['value'], totals['protein']['unit'])
     salt_formatted = format_with_unit(totals['salt']['value'], totals['salt']['unit'])
-    print(f"{indent}Protein: {protein_formatted}")
-    print(f"{indent}Salt: {salt_formatted}")
+    print_item_detail("Protein", protein_formatted, indent)
+    print_item_detail("Salt", salt_formatted, indent)

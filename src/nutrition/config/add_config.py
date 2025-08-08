@@ -1,5 +1,6 @@
 import os
 
+from ..console import print_success
 from ..utils import save_data, load_yaml
 from ..vars import SETTINGS_FILE
 
@@ -40,4 +41,4 @@ def add_config(name, set_current, folder):
     if set_current:
         settings["current"] = name
     save_data(settings, SETTINGS_FILE)
-    print(f"✔️ Created new configuration '{name}': {SETTINGS_FILE}")
+    print_success(f"Created new configuration '{name}': {SETTINGS_FILE}")

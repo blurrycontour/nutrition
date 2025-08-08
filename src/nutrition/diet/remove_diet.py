@@ -1,5 +1,7 @@
+from ..console import print_success, print_error
 from ..utils import save_data
-from .load import load
+from ..loader import load
+
 
 def configure_remove_parser(parser):
     """Configure arguments for diet remove command"""
@@ -17,13 +19,13 @@ def handle_remove(args):
 
 def remove_diet(diet_name):
     """Remove diet from the specified YAML file."""
-    diets, file = load()
+    diets, file = load("diet")
 
     # Remove all diets
     if diet_name == "--all--":
         diets.clear()
         save_data(diets, file)
-        print(f"✔️ Successfully removed all diets from {file}")
+        print_success(f"Successfully removed all diets from {file}")
         return None
 
     # Find and remove the diet
@@ -34,9 +36,9 @@ def remove_diet(diet_name):
             # Save the updated data
             save_data(diets, file)
 
-            print(f"✔️ Successfully removed diet '{diet_name}' from {file}")
-            print(f"✔️ Removed diet had {len(removed_diet['meals'])} meals")
+            print_success(f"Successfully removed diet '{diet_name}' from {file}")
+            print_success(f"Removed diet had {len(removed_diet['meals'])} meals")
             return removed_diet
 
-    print(f"❌ Diet '{diet_name}' not found in {file}")
+    print_error(f"Diet '{diet_name}' not found in {file}")
     return None

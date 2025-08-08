@@ -1,5 +1,7 @@
+from ..console import *
 from ..meal.calculate import calculate_meal
 from .get_diet import get_diet
+
 
 def configure_calculate_parser(parser):
     """Configure arguments for diet calculate command"""
@@ -17,17 +19,16 @@ def calculate_diet(diet_name, summary_only=False):
     target_diet = get_diet(name=diet_name, verbose=0)
 
     if not target_diet or not isinstance(target_diet, dict) or 'meals' not in target_diet:
-        print(f"❌ Diet '{diet_name}' not found or has no meals")
+        print_error(f"Diet '{diet_name}' not found or has no meals")
         return None
 
-    print(f"\nCalculating total nutrition for diet: '{diet_name}'")
-    print("=" * 60)
+    print_header(f"Calculating total nutrition for diet: '{diet_name}'", '=')
 
     if 'description' in target_diet:
         print(f"Description: {target_diet['description']}")
 
     print(f"Total meals in diet: {len(target_diet['meals'])}")
-    print("-" * 60)
+    print_separator()
 
     # Initialize diet totals
     diet_totals = {
@@ -55,8 +56,7 @@ def calculate_diet(diet_name, summary_only=False):
         elif 'type' in diet_meal:
             meal_info += f" (Type: {diet_meal['type']})"
 
-        print(f"\n{meal_info}")
-        print("-" * 40)
+        print_subheader(meal_info, '-')
 
         try:
             # Calculate nutrition for this meal
@@ -72,28 +72,26 @@ def calculate_diet(diet_name, summary_only=False):
                 calculated_meals.append(meal_name)
             else:
                 missing_meals.append(meal_name)
-                print(f"⚠️  Could not calculate nutrition for meal '{meal_name}'")
+                print_warning(f"Could not calculate nutrition for meal '{meal_name}'")
 
         except Exception as e:
             missing_meals.append(meal_name)
-            print(f"⚠️  Error calculating nutrition for meal '{meal_name}': {str(e)}")
+            print_warning(f"Error calculating nutrition for meal '{meal_name}': {str(e)}")
 
     # Display diet summary
-    print("\n" + "=" * 60)
-    print("🍽️  TOTAL NUTRITION FOR ENTIRE DIET")
-    print("=" * 60)
+    print_header("🍽️  TOTAL NUTRITION FOR ENTIRE DIET", '=')
     print_nutrition_totals(diet_totals)
 
     # Summary information
-    print("\n" + "-" * 60)
-    print(f"✔️ Successfully calculated {len(calculated_meals)} out of {len(target_diet['meals'])} meals")
+    print_separator()
+    print_success(f"Successfully calculated {len(calculated_meals)} out of {len(target_diet['meals'])} meals")
 
     if missing_meals:
-        print(f"⚠️  Could not calculate nutrition for {len(missing_meals)} meals:")
+        print_warning(f"Could not calculate nutrition for {len(missing_meals)} meals:")
         for meal in missing_meals:
             print(f"   - {meal}")
 
-    print("-" * 60)
+    print_separator()
 
     return diet_totals
 
@@ -125,20 +123,6 @@ def add_to_totals(diet_totals, meal_totals):
     if meal_totals['salt']['value'] is not None:
         diet_totals['salt']['value'] += meal_totals['salt']['value']
 
-def format_number(value):
-    """Format a number to remove trailing zeros."""
-    if value is None:
-        return "-"
-    if isinstance(value, float):
-        return f"{value:.2f}".rstrip('0').rstrip('.')
-    return str(value)
-
-def format_with_unit(value, unit):
-    """Format value with unit, or just '-' if value is None."""
-    if value is None or value == 0:
-        return "-"
-    formatted_value = format_number(value)
-    return f"{formatted_value} {unit}"
 
 def print_nutrition_totals(totals):
     """Print the total nutrition values in a formatted way."""
@@ -146,24 +130,24 @@ def print_nutrition_totals(totals):
     sub_indent = "    "
 
     energy_formatted = format_with_unit(totals['energy']['value'], totals['energy']['unit'])
-    print(f"{indent}Energy: {energy_formatted}")
+    print_item_detail("Energy", energy_formatted, indent)
 
     carbs_formatted = format_with_unit(totals['carbohydrates']['value'], totals['carbohydrates']['unit'])
     sugar_formatted = format_with_unit(totals['carbohydrates']['sugar'], totals['carbohydrates']['unit'])
-    print(f"{indent}Carbohydrates: {carbs_formatted}")
-    print(f"{sub_indent}Sugar: {sugar_formatted}")
+    print_item_detail("Carbohydrates", carbs_formatted, indent)
+    print_sub_item_detail("Sugar", sugar_formatted, sub_indent)
 
     fat_formatted = format_with_unit(totals['fat']['value'], totals['fat']['unit'])
     fat_sat_formatted = format_with_unit(totals['fat']['saturated'], totals['fat']['unit'])
     fat_unsat_formatted = format_with_unit(totals['fat']['unsaturated'], totals['fat']['unit'])
-    print(f"{indent}Fat: {fat_formatted}")
-    print(f"{sub_indent}Saturated: {fat_sat_formatted}")
-    print(f"{sub_indent}Unsaturated: {fat_unsat_formatted}")
+    print_item_detail("Fat", fat_formatted, indent)
+    print_sub_item_detail("Saturated", fat_sat_formatted, sub_indent)
+    print_sub_item_detail("Unsaturated", fat_unsat_formatted, sub_indent)
 
     protein_formatted = format_with_unit(totals['protein']['value'], totals['protein']['unit'])
     salt_formatted = format_with_unit(totals['salt']['value'], totals['salt']['unit'])
-    print(f"{indent}Protein: {protein_formatted}")
-    print(f"{indent}Salt: {salt_formatted}")
+    print_item_detail("Protein", protein_formatted, indent)
+    print_item_detail("Salt", salt_formatted, indent)
 
 def calculate_meal_silent(meal_name):
     """Calculate meal nutrition without printing details (for summary mode)."""

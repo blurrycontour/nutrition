@@ -1,6 +1,7 @@
 import os
 import sys
 
+from ..console import print_error, print_success
 from ..utils import save_data, load_yaml
 from ..vars import SETTINGS_FILE
 
@@ -19,7 +20,7 @@ def handle_set(args):
 def set_config(name):
     """Set the configuration."""
     if not os.path.exists(SETTINGS_FILE):
-        print("❌ No configurations created.\nUse 'nut config create --name <my-config>' to create one.")
+        print_error("No configurations created.\nUse 'nut config create --name <my-config>' to create one.")
         sys.exit(1)
 
     settings = load_yaml(SETTINGS_FILE)
@@ -29,5 +30,5 @@ def set_config(name):
     settings["current"] = name
     save_data(settings, SETTINGS_FILE)
 
-    print(f"✔️ Configuration set to: {name}")
-    print(f"✔️ Settings saved in: {SETTINGS_FILE}")
+    print_success(f"Configuration set to: {name}")
+    print_success(f"Settings saved in: {SETTINGS_FILE}")

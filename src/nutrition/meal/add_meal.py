@@ -1,6 +1,7 @@
 """Script to add a new meal to a YAML file"""
+from ..console import print_section_title, print_success
 from ..utils import save_data
-from .load import load
+from ..loader import load
 
 def configure_add_parser(parser):
     """Configure arguments for meal add command"""
@@ -13,7 +14,7 @@ def handle_add(_args):
 def get_user_input():
     """Collect user input for meal creation."""
     title = "Add a new meal 🥗"
-    print(f"\n{title}\n{'=' * len(title)}")
+    print_section_title(title)
 
     # Basic information
     name = input("Meal name: ").strip()
@@ -61,7 +62,7 @@ def get_user_input():
 
 def add_meal():
     """Main function to add a new meal."""
-    existing_data, file = load()
+    existing_data, file = load("meal")
     new_meal = get_user_input()
 
     if new_meal is None:
@@ -70,5 +71,5 @@ def add_meal():
     existing_data.append(new_meal)
     save_data(existing_data, file)
 
-    print(f"\n✔️ Successfully added meal '{new_meal['name']}' to {file}")
-    print(f"✔️ Meal contains {len(new_meal['items'])} items")
+    print_success(f"Successfully added meal '{new_meal['name']}' to {file}")
+    print_success(f"Meal contains {len(new_meal['items'])} items")

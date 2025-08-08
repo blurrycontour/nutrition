@@ -1,6 +1,7 @@
 """  Script to add a new nutrition item to a YAML file """
+from ..console import print_section_title, print_subsection_title, print_success
 from ..utils import save_data
-from .load import load
+from ..loader import load
 
 def configure_add_parser(parser):
     """Configure arguments for item add command"""
@@ -13,15 +14,15 @@ def handle_add(_args):
 def get_user_input():
     """Collect user input for all fields in the nutrition data template."""
     title = "Add a new nutrition item"
-    print(f"\n{title}\n{'=' * len(title)}")
+    print_section_title(title)
 
     # Basic information
     name = input("Item name: ").strip()
     item_type = input("Item type (e.g., Bread, Fruit, Vegetable): ").strip()
     per = input("Values are per (e.g., 100g, 1 piece) [100g]: ").strip() or "100g"
 
-    nutrition_title = f"Nutrition information (per {per}):"
-    print(f"\n{nutrition_title}\n{'-' * len(nutrition_title)}")
+    nutrition_title = f"Nutrition information (per {per})"
+    print_subsection_title(nutrition_title)
 
     # Energy
     energy_input = input("Energy: ").strip()
@@ -90,9 +91,9 @@ def get_user_input():
 
 def add_item():
     """Main function to add a new nutrition item."""
-    existing_data, file = load()
+    existing_data, file = load("item")
     new_item = get_user_input()
     existing_data.append(new_item)
     save_data(existing_data, file)
 
-    print(f"\n✔️ Successfully added '{new_item['name']}' to {file}")
+    print_success(f"Successfully added '{new_item['name']}' to {file}")

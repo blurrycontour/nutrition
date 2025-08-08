@@ -1,6 +1,10 @@
 import os
 import yaml
 
+from .console import print_separator
+from .config import get_config
+
+
 def load_yaml(filepath):
     """Read YAML configuration file and return the contents as a dictionary."""
     with open(filepath, "r", encoding="utf-8") as file:
@@ -31,6 +35,6 @@ def vprint(text, verbose=0):
 
 def print_yaml(data:dict, lines=False):
     """Print YAML data."""
-    if lines: print('-'*30)
+    if lines: print_separator()
     print(yaml.dump(data, sort_keys=False, allow_unicode=True, indent=2))
-    if lines: print('-'*30)
+    if lines: print_separator()

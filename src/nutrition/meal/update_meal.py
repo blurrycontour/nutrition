@@ -1,5 +1,6 @@
+from ..console import print_section_title, format_number, print_success, print_error
 from ..utils import save_data
-from .load import load
+from ..loader import load
 
 def configure_update_parser(parser):
     """Configure arguments for meal update command"""
@@ -13,7 +14,7 @@ def handle_update(args):
 def get_user_input(existing_meal):
     """Collect user input for updating meal with existing values as defaults."""
     title = f"Update meal: {existing_meal['name']}"
-    print(f"\n{title}\n{'=' * len(title)}")
+    print_section_title(title)
     print("Press Enter to keep existing values, or type new values to update.")
 
     # Basic information
@@ -127,17 +128,10 @@ def edit_existing_items(existing_items):
 
     return items
 
-def format_number(value):
-    """Format a number to remove trailing zeros."""
-    if value is None:
-        return "-"
-    if isinstance(value, float):
-        return f"{value:.2f}".rstrip('0').rstrip('.')
-    return str(value)
 
 def update_meal(meal_name):
     """Update meal in the specified YAML file."""
-    meals, file = load()
+    meals, file = load("meal")
 
     # Find and update the meal
     for i, meal in enumerate(meals):
@@ -145,9 +139,9 @@ def update_meal(meal_name):
             updated_meal = get_user_input(meal)
             meals[i] = updated_meal
             save_data(meals, file)
-            print(f"\n✔️ Successfully updated meal '{meal_name}' in {file}")
-            print(f"✔️ Meal now contains {len(updated_meal['items'])} items")
+            print_success(f"Successfully updated meal '{meal_name}' in {file}")
+            print_success(f"Meal now contains {len(updated_meal['items'])} items")
             return updated_meal
 
-    print(f"❌ Meal '{meal_name}' not found in {file}")
+    print_error(f"Meal '{meal_name}' not found in {file}")
     return None

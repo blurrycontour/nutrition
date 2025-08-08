@@ -1,5 +1,6 @@
+from ..console import print_section_title
 from ..utils import save_data
-from .load import load
+from ..loader import load
 
 def configure_update_parser(parser):
     """Configure arguments for diet update command"""
@@ -13,7 +14,7 @@ def handle_update(args):
 def get_user_input(existing_diet):
     """Collect user input for updating diet with existing values as defaults."""
     title = f"Update diet: {existing_diet['name']}"
-    print(f"\n{title}\n{'=' * len(title)}")
+    print_section_title(title)
     print("Press Enter to keep existing values, or type new values to update.")
 
     # Basic information
@@ -147,7 +148,9 @@ def edit_existing_meals(existing_meals):
 
 def update_diet(diet_name):
     """Update diet in the specified YAML file."""
-    diets, file = load()
+    from ..console import print_success, print_error
+
+    diets, file = load("diet")
 
     # Find and update the diet
     for i, diet in enumerate(diets):
@@ -155,9 +158,9 @@ def update_diet(diet_name):
             updated_diet = get_user_input(diet)
             diets[i] = updated_diet
             save_data(diets, file)
-            print(f"\n✔️ Successfully updated diet '{diet_name}' in {file}")
-            print(f"✔️ Diet now contains {len(updated_diet['meals'])} meals")
+            print_success(f"Successfully updated diet '{diet_name}' in {file}")
+            print_success(f"Diet now contains {len(updated_diet['meals'])} meals")
             return updated_diet
 
-    print(f"❌ Diet '{diet_name}' not found in {file}")
+    print_error(f"Diet '{diet_name}' not found in {file}")
     return None

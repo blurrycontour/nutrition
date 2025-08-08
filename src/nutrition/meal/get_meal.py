@@ -1,4 +1,7 @@
-from .load import load
+from ..console import format_number, print_item_detail
+from ..console import print_list_header, print_error
+from ..loader import load
+
 
 def configure_get_parser(parser):
     """Configure arguments for meal get command"""
@@ -11,17 +14,17 @@ def handle_get(args):
 
 def get_meal(name=None, verbose=1):
     """Retrieve meal data from the specified YAML file."""
-    meals, _ = load()
+    meals, _ = load("meal")
     if name:
         for meal in meals:
             if meal["name"] == name:
                 if verbose > 0:
                     print_meal(meal)
                 return meal
-        print(f"❌ Meal '{name}' not found")
+        print_error(f"Meal '{name}' not found")
         return dict()
     all_meals = [meal["name"] for meal in meals]
-    print(f"[Found ({len(all_meals)}) meals]")
+    print_list_header(len(all_meals), "meal")
     if all_meals:
         print("  " + "\n  ".join(all_meals))
     else:
@@ -30,8 +33,8 @@ def get_meal(name=None, verbose=1):
 
 def print_meal(meal):
     """Print the details of a meal."""
-    print(f"Meal: {meal['name']}")
-    print(f"Items ({len(meal['items'])}):")
+    print_item_detail("Meal", meal['name'], "")
+    print_item_detail(f"Items ({len(meal['items'])})", "", "")
 
     if not meal['items']:
         print("  No items in this meal")

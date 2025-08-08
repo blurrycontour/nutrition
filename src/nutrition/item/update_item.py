@@ -1,5 +1,6 @@
+from ..console import print_section_title, print_subsection_title, print_success, print_error
 from ..utils import save_data
-from .load import load
+from ..loader import load
 
 def configure_update_parser(parser):
     """Configure arguments for item update command"""
@@ -13,7 +14,7 @@ def handle_update(args):
 def get_user_input(existing_item):
     """Collect user input for updating nutrition item fields with existing values as defaults."""
     title = f"Update nutrition item: {existing_item['name']}"
-    print(f"\n{title}\n{'=' * len(title)}")
+    print_section_title(title)
     print("Press Enter to keep existing values, or type new values to update.")
 
     # Basic information
@@ -21,8 +22,8 @@ def get_user_input(existing_item):
     item_type = input(f"Item type [{existing_item['type']}]: ").strip() or existing_item['type']
     per = input(f"Values are per [{existing_item['per']}]: ").strip() or existing_item['per']
 
-    nutrition_title = f"Nutrition information (per {per}):"
-    print(f"\n{nutrition_title}\n{'-' * len(nutrition_title)}")
+    nutrition_title = f"Nutrition information (per {per})"
+    print_subsection_title(nutrition_title)
 
     # Energy
     current_energy = existing_item['nutrition']['energy']['value']
@@ -144,15 +145,15 @@ def get_user_input(existing_item):
 
 def update_item(item_name):
     """Update item in the specified YAML file."""
-    items, file = load()
+    items, file = load("item")
     # Find and update the item
     for i, item in enumerate(items):
         if item["name"] == item_name:
             updated_item = get_user_input(item)
             items[i] = updated_item
             save_data(items, file)
-            print(f"✔️ Successfully updated '{item_name}' in {file}")
+            print_success(f"Successfully updated '{item_name}' in {file}")
             return updated_item
 
-    print(f"❌ Item '{item_name}' not found in {file}")
+    print_error(f"Item '{item_name}' not found in {file}")
     return None

@@ -1,5 +1,6 @@
+from ..console import print_success, print_error
 from ..utils import save_data
-from .load import load
+from ..loader import load
 
 def configure_remove_parser(parser):
     """Configure arguments for item remove command"""
@@ -17,12 +18,12 @@ def handle_remove(args):
 
 def remove_item(name):
     """Remove item from the specified YAML file."""
-    items, file = load()
+    items, file = load("item")
     # Remove all items
     if name == "--all--":
         items.clear()
         save_data(items, file)
-        print(f"✔️ Successfully removed all items from {file}")
+        print_success(f"Successfully removed all items from {file}")
         return None
 
     # Find and remove the item
@@ -30,8 +31,8 @@ def remove_item(name):
         if item["name"] == name:
             removed_item = items.pop(i)
             save_data(items, file)
-            print(f"✔️ Successfully removed '{name}' from {file}")
+            print_success(f"Successfully removed '{name}' from {file}")
             return removed_item
 
-    print(f"❌ Item '{name}' not found in {file}")
+    print_error(f"Item '{name}' not found in {file}")
     return None
