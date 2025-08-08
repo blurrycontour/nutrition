@@ -2,8 +2,6 @@ import os
 import yaml
 
 from .console import print_separator
-from .config import get_config
-
 
 def load_yaml(filepath):
     """Read YAML configuration file and return the contents as a dictionary."""
