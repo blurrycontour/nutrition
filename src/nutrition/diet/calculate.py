@@ -5,7 +5,7 @@ from .get_diet import get_diet
 
 def configure_calculate_parser(parser):
     """Configure arguments for diet calculate command"""
-    parser.add_argument("--name", "-n", required=True, help="Name of the diet to calculate")
+    parser.add_argument("name", help="Name of the diet to calculate (accepts regex)")
     parser.add_argument("--summary", "-s", action="store_true", help="Show summary only")
     parser.set_defaults(func=handle_calculate)
 
@@ -16,10 +16,13 @@ def handle_calculate(args):
 def calculate_diet(diet_name, summary_only=False):
     """Calculate the total nutrition values for all meals in the specified diet."""
     # Get the diet plan
-    target_diet = get_diet(name=diet_name, verbose=0)
+    target_diet, idx = get_diet(name=diet_name, verbose=0)
 
-    if not target_diet or not isinstance(target_diet, dict) or 'meals' not in target_diet:
-        print_error(f"Diet '{diet_name}' not found or has no meals")
+    if idx is None:
+        print_error(f"Diet '{diet_name}' not found")
+        return None
+    elif idx == -1:
+        print_error(f"Multiple diets matched with '{diet_name}'")
         return None
 
     print_header(f"Calculating total nutrition for diet: '{diet_name}'", '=')

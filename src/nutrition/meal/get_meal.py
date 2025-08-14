@@ -1,11 +1,14 @@
+import re
+
 from ..console import format_number, print_item_detail
 from ..console import print_list_header, print_error
 from ..loader import load
+from ..utils import vprint
 
 
 def configure_get_parser(parser):
     """Configure arguments for meal get command"""
-    parser.add_argument("--name", "-n", help="Name of the meal to retrieve")
+    parser.add_argument("name", nargs="?", default="", help="Name of the meal to retrieve (accepts regex)")
     parser.set_defaults(func=handle_get)
 
 def handle_get(args):
@@ -15,21 +18,25 @@ def handle_get(args):
 def get_meal(name=None, verbose=1):
     """Retrieve meal data from the specified YAML file."""
     meals, _ = load("meal")
-    if name:
-        for meal in meals:
-            if meal["name"] == name:
-                if verbose > 0:
-                    print_meal(meal)
-                return meal
-        print_error(f"Meal '{name}' not found")
-        return dict()
-    all_meals = [meal["name"] for meal in meals]
-    print_list_header(len(all_meals), "meal")
-    if all_meals:
-        print("  " + "\n  ".join(all_meals))
+    matched_meals = []
+    matched_meal_idx = -1
+    for i, meal in enumerate(meals):
+        if re.search(name, meal["name"], re.IGNORECASE):
+            matched_meal_idx = i
+            matched_meals.append(meal["name"])
+
+    if verbose:
+        print_list_header(len(matched_meals), "meal")
+    if not matched_meals:
+        vprint("  No meals found", verbose)
+        return None, None
+    if len(matched_meals) == 1:
+        if verbose > 0:
+            print_meal(meals[matched_meal_idx])
+        return meals[matched_meal_idx], matched_meal_idx
     else:
-        print("  No meals found")
-    return all_meals
+        vprint("  " + "\n  ".join(matched_meals), verbose)
+        return matched_meals, -1
 
 def print_meal(meal):
     """Print the details of a meal."""

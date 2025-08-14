@@ -1,10 +1,11 @@
 from ..console import print_section_title, format_number, print_success, print_error
 from ..utils import save_data
 from ..loader import load
+from .get_meal import get_meal
 
 def configure_update_parser(parser):
     """Configure arguments for meal update command"""
-    parser.add_argument("--name", "-n", required=True, help="Name of the meal to update")
+    parser.add_argument("name", help="Name of the meal to update (accepts regex)")
     parser.set_defaults(func=handle_update)
 
 def handle_update(args):
@@ -132,16 +133,17 @@ def edit_existing_items(existing_items):
 def update_meal(meal_name):
     """Update meal in the specified YAML file."""
     meals, file = load("meal")
+    meal, idx = get_meal(meal_name, verbose=0)
+    if idx is None:
+        print_error(f"Meal '{meal_name}' not found in {file}")
+        return None
+    elif idx == -1:
+        print_error(f"Multiple meals matched with '{meal_name}' in {file}")
+        return None
 
-    # Find and update the meal
-    for i, meal in enumerate(meals):
-        if meal["name"] == meal_name:
-            updated_meal = get_user_input(meal)
-            meals[i] = updated_meal
-            save_data(meals, file)
-            print_success(f"Successfully updated meal '{meal_name}' in {file}")
-            print_success(f"Meal now contains {len(updated_meal['items'])} items")
-            return updated_meal
-
-    print_error(f"Meal '{meal_name}' not found in {file}")
-    return None
+    updated_meal = get_user_input(meal)
+    meals[idx] = updated_meal
+    save_data(meals, file)
+    print_success(f"Successfully updated meal '{meal_name}' in {file}")
+    print_success(f"Meal now contains {len(updated_meal['items'])} items")
+    return updated_meal

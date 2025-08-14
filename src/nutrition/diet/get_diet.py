@@ -1,10 +1,13 @@
+import re
+
 from ..console import print_list_header, print_error, print_item_detail
 from ..loader import load
+from ..utils import vprint
 
 
 def configure_get_parser(parser):
     """Configure arguments for diet get command"""
-    parser.add_argument("--name", "-n", help="Name of the diet to retrieve")
+    parser.add_argument("name", nargs="?", default="", help="Name of the diet to retrieve (accepts regex)")
     parser.set_defaults(func=handle_get)
 
 def handle_get(args):
@@ -14,21 +17,26 @@ def handle_get(args):
 def get_diet(name=None, verbose=1):
     """Retrieve diet data from the specified YAML file."""
     diets, _ = load("diet")
-    if name:
-        for diet in diets:
-            if diet["name"] == name:
-                if verbose > 0:
-                    print_diet(diet)
-                return diet
-        print_error(f"Diet '{name}' not found")
-        return dict()
-    all_diets = [diet["name"] for diet in diets]
-    print_list_header(len(all_diets), "diet")
-    if all_diets:
-        print("  " + "\n  ".join(all_diets))
+    matched_diets = []
+    matched_diet_idx = -1
+    for i, diet in enumerate(diets):
+        if re.search(name, diet["name"], re.IGNORECASE):
+            matched_diet_idx = i
+            matched_diets.append(diet["name"])
+
+    if verbose:
+        print_list_header(len(matched_diets), "diet")
+    if not matched_diets:
+        vprint("  No diets found", verbose)
+        return None, None
+    if len(matched_diets) == 1:
+        if verbose > 0:
+            print_diet(diets[matched_diet_idx])
+        return diets[matched_diet_idx], matched_diet_idx
     else:
-        print("  No diets found")
-    return all_diets
+        vprint("  " + "\n  ".join(matched_diets), verbose)
+        return matched_diets, -1
+
 
 def print_diet(diet):
     """Print the details of a diet."""

@@ -1,10 +1,12 @@
 from ..console import print_section_title, print_subsection_title, print_success, print_error
 from ..utils import save_data
 from ..loader import load
+from .get_item import get_item
+
 
 def configure_update_parser(parser):
     """Configure arguments for item update command"""
-    parser.add_argument("--name", "-n", help="Name of the food item to update", required=True)
+    parser.add_argument("name", help="Name of the food item to update (accepts regex)")
     parser.set_defaults(func=handle_update)
 
 def handle_update(args):
@@ -146,14 +148,16 @@ def get_user_input(existing_item):
 def update_item(item_name):
     """Update item in the specified YAML file."""
     items, file = load("item")
-    # Find and update the item
-    for i, item in enumerate(items):
-        if item["name"] == item_name:
-            updated_item = get_user_input(item)
-            items[i] = updated_item
-            save_data(items, file)
-            print_success(f"Successfully updated '{item_name}' in {file}")
-            return updated_item
+    item, idx = get_item(item_name, verbose=0)
+    if idx is None:
+        print_error(f"Item '{item_name}' not found in {file}")
+        return None
+    elif idx == -1:
+        print_error(f"Multiple items matched with '{item_name}' in {file}")
+        return None
 
-    print_error(f"Item '{item_name}' not found in {file}")
-    return None
+    updated_item = get_user_input(item)
+    items[idx] = updated_item
+    save_data(items, file)
+    print_success(f"Successfully updated '{item_name}' in {file}")
+    return updated_item

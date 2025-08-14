@@ -6,7 +6,7 @@ from .get_meal import get_meal
 
 def configure_calculate_parser(parser):
     """Configure arguments for meal calculate command"""
-    parser.add_argument("--name", "-n", required=True, help="Name of the meal to calculate")
+    parser.add_argument("name", help="Name of the meal to calculate (accepts regex)")
     parser.set_defaults(func=handle_calculate)
 
 def handle_calculate(args):
@@ -17,7 +17,13 @@ def calculate_meal(meal_name):
     """Calculate the total nutrition values for the specified meal."""
     items, _ = load("item")
     # Find the specified meal
-    target_meal = get_meal(name=meal_name, verbose=0)
+    target_meal, idx = get_meal(name=meal_name, verbose=0)
+    if idx is None:
+        print_error(f"Meal '{meal_name}' not found")
+        return None
+    elif idx == -1:
+        print_error(f"Multiple meals matched with '{meal_name}'")
+        return None
     # Create a lookup dictionary for items
     item_lookup = {item["name"]: item for item in items}
 
@@ -92,9 +98,7 @@ def calculate_meal(meal_name):
 
     # Display results
     print_separator()
-    print_separator()
-    print_subsection_title("💯 Total Nutrition Value")
-    print()
+    print_header("💯 TOTAL NUTRITION FOR MEAL", '=')
     print_nutrition_totals(totals)
 
     if missing_items:

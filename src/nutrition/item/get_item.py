@@ -1,9 +1,13 @@
+import re
+
 from ..console import print_list_header, format_with_unit, print_item_detail, print_sub_item_detail
 from ..loader import load
+from ..utils import vprint
+
 
 def configure_get_parser(parser):
     """Configure arguments for item get command"""
-    parser.add_argument("--name", "-n", help="Name of the food item to retrieve")
+    parser.add_argument("name", nargs="?", default="", help="Name of the food item to retrieve (accepts regex)")
     parser.set_defaults(func=handle_get)
 
 def handle_get(args):
@@ -13,20 +17,25 @@ def handle_get(args):
 def get_item(name=None, verbose=1):
     """Retrieve item data from the specified YAML file."""
     items, _ = load("item")
-    if name:
-        for item in items:
-            if item["name"] == name:
-                if verbose > 0:
-                    print_item(item, indent=3)
-                return item
-        return None
-    all_items = [item["name"] for item in items]
-    print_list_header(len(all_items), "item")
-    if all_items:
-        print("  " + "\n  ".join(all_items))
+    matched_items = []
+    matched_item_idx = -1
+    for i, item in enumerate(items):
+        if re.search(name, item["name"], re.IGNORECASE):
+            matched_item_idx = i
+            matched_items.append(item["name"])
+
+    if verbose:
+        print_list_header(len(matched_items), "item")
+    if not matched_items:
+        vprint("  No items found", verbose)
+        return None, None
+    if len(matched_items) == 1:
+        if verbose > 0:
+            print_item(items[matched_item_idx], indent=3)
+        return items[matched_item_idx], matched_item_idx
     else:
-        print("  No items found")
-    return all_items
+        vprint("  " + "\n  ".join(matched_items), verbose)
+        return matched_items, -1
 
 
 def print_item(item, indent=2):

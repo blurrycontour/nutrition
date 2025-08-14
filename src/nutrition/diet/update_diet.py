@@ -1,10 +1,12 @@
-from ..console import print_section_title
+from ..console import print_section_title, print_success, print_error
 from ..utils import save_data
 from ..loader import load
+from .get_diet import get_diet
+
 
 def configure_update_parser(parser):
     """Configure arguments for diet update command"""
-    parser.add_argument("--name", "-n", required=True, help="Name of the diet to update")
+    parser.add_argument("name", help="Name of the diet to update (accepts regex)")
     parser.set_defaults(func=handle_update)
 
 def handle_update(args):
@@ -148,19 +150,18 @@ def edit_existing_meals(existing_meals):
 
 def update_diet(diet_name):
     """Update diet in the specified YAML file."""
-    from ..console import print_success, print_error
-
     diets, file = load("diet")
+    diet, idx = get_diet(diet_name, verbose=0)
+    if idx is None:
+        print_error(f"Diet '{diet_name}' not found in {file}")
+        return None
+    elif idx == -1:
+        print_error(f"Multiple diets matched with '{diet_name}' in {file}")
+        return None
 
-    # Find and update the diet
-    for i, diet in enumerate(diets):
-        if diet["name"] == diet_name:
-            updated_diet = get_user_input(diet)
-            diets[i] = updated_diet
-            save_data(diets, file)
-            print_success(f"Successfully updated diet '{diet_name}' in {file}")
-            print_success(f"Diet now contains {len(updated_diet['meals'])} meals")
-            return updated_diet
-
-    print_error(f"Diet '{diet_name}' not found in {file}")
-    return None
+    updated_diet = get_user_input(diet)
+    diets[idx] = updated_diet
+    save_data(diets, file)
+    print_success(f"Successfully updated diet '{diet_name}' in {file}")
+    print_success(f"Diet now contains {len(updated_diet['meals'])} meals")
+    return updated_diet
