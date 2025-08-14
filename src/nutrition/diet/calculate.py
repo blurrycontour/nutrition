@@ -83,12 +83,12 @@ def calculate_diet(diet_name, summary_only=False):
             print_warning(f"Error calculating nutrition for meal '{meal_name}': {str(e)}")
 
     # Display diet summary
-    print_header("🍽️  TOTAL NUTRITION FOR ENTIRE DIET", '=')
+    print_header("🍽️  TOTAL NUTRITION FOR DIET", '=')
     print_nutrition_totals(diet_totals)
 
     # Summary information
     print_separator()
-    print_success(f"Successfully calculated {len(calculated_meals)} out of {len(target_diet['meals'])} meals")
+    print_success(f"Calculated nutrition for {len(calculated_meals)}/{len(target_diet['meals'])} meals")
 
     if missing_meals:
         print_warning(f"Could not calculate nutrition for {len(missing_meals)} meals:")
