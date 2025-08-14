@@ -41,7 +41,6 @@ def calculate_meal(meal_name):
 
     meal_name = target_meal["name"]
     print_header(f"Calculating for MEAL: '{meal_name}'\n[Items in meal: {len(target_meal['items'])}]", '=')
-    # print(f"[Items in meal: {len(target_meal['items'])}]\n") # type: ignore
 
     # Calculate nutrition for each item in the meal
     for meal_item in target_meal['items']:  # type: ignore
@@ -98,8 +97,9 @@ def calculate_meal(meal_name):
         print(f"✔️ {format_number(quantity)} {unit} of {item_name} (×{format_number(multiplier)})")
 
     # Display results
-    print_separator()
-    print_header("💯 TOTAL NUTRITION FOR MEAL", '=')
+    # print_separator()
+    print_header("","=")
+    print_header("💯 TOTAL NUTRITION FOR MEAL", '=', newline=False)
     print_nutrition_totals(totals)
 
     print_separator()

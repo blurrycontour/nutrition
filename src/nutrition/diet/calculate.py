@@ -26,13 +26,12 @@ def calculate_diet(diet_name, summary_only=False):
         return None
 
     diet_name = target_diet["name"]
-    print_header(f"Calculating total nutrition for DIET: '{diet_name}'", '=')
+    print_header(f"Calculating for DIET: '{diet_name}'\n[Meals in diet: {len(target_diet['meals'])}]", '¤')
 
     if 'description' in target_diet:
         print(f"Description: {target_diet['description']}")
+        print_separator()
 
-    print(f"Total meals in diet: {len(target_diet['meals'])}")
-    print_separator()
 
     # Initialize diet totals
     diet_totals = {
@@ -60,7 +59,7 @@ def calculate_diet(diet_name, summary_only=False):
         elif 'type' in diet_meal:
             meal_info += f" (Type: {diet_meal['type']})"
 
-        print_subheader(meal_info, '-')
+        print_subheader(meal_info, '=')
 
         try:
             # Calculate nutrition for this meal
@@ -83,7 +82,8 @@ def calculate_diet(diet_name, summary_only=False):
             print_warning(f"Error calculating nutrition for meal '{meal_name}': {str(e)}")
 
     # Display diet summary
-    print_header("🍽️  TOTAL NUTRITION FOR DIET", '=')
+    print_header("","¤")
+    print_header("🍽️  TOTAL NUTRITION FOR DIET", '¤', newline=False)
     print_nutrition_totals(diet_totals)
 
     # Summary information

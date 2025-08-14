@@ -11,7 +11,7 @@ def get_terminal_width():
         return 80
 
 
-def print_header(text, style='=', width=None):
+def print_header(text, style='=', width=None, newline=True):
     """Print a header with full-width underline.
 
     Args:
@@ -22,7 +22,10 @@ def print_header(text, style='=', width=None):
     if width is None:
         width = get_terminal_width()
 
-    print(f"\n{text}")
+    if newline:
+        print(f"\n{text}")
+    else:
+        print(f"{text}")
     print(style * width)
 
 
