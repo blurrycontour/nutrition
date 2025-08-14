@@ -25,7 +25,8 @@ def calculate_diet(diet_name, summary_only=False):
         print_error(f"Multiple diets matched with '{diet_name}'")
         return None
 
-    print_header(f"Calculating total nutrition for diet: '{diet_name}'", '=')
+    diet_name = target_diet["name"]
+    print_header(f"Calculating total nutrition for DIET: '{diet_name}'", '=')
 
     if 'description' in target_diet:
         print(f"Description: {target_diet['description']}")

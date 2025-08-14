@@ -39,7 +39,8 @@ def calculate_meal(meal_name):
     missing_items = []
     calculated_items = []
 
-    print_header(f"Calculating total nutrition for '{meal_name}'", '=')
+    meal_name = target_meal["name"]
+    print_header(f"Calculating total nutrition for MEAL '{meal_name}'", '=')
     print(f"Items in meal: {len(target_meal['items'])}\n") # type: ignore
 
     # Calculate nutrition for each item in the meal
