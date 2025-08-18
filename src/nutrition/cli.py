@@ -23,7 +23,7 @@ def main():
     item_add_parser = item_subparsers.add_parser("add", aliases=["create"], help="Add a new food item")
     nutitem.configure_add_parser(item_add_parser)
     # Item get subcommand
-    item_get_parser = item_subparsers.add_parser("get", aliases=["show", "calc"], help="Get food item information")
+    item_get_parser = item_subparsers.add_parser("get", aliases=["show", "calc", "list"], help="Get food item information")
     nutitem.configure_get_parser(item_get_parser)
     # Item remove subcommand
     item_remove_parser = item_subparsers.add_parser("remove", aliases=["delete", "rm"], help="Remove a food item")
@@ -40,7 +40,7 @@ def main():
     meal_add_parser = meal_subparsers.add_parser("add", aliases=["create"], help="Add a new meal")
     nutmeal.configure_add_parser(meal_add_parser)
     # Meal get subcommand
-    meal_get_parser = meal_subparsers.add_parser("get", aliases=["show"], help="Get meal information")
+    meal_get_parser = meal_subparsers.add_parser("get", aliases=["show", "list"], help="Get meal information")
     nutmeal.configure_get_parser(meal_get_parser)
     # Meal remove subcommand
     meal_remove_parser = meal_subparsers.add_parser("remove", aliases=["delete", "rm"], help="Remove a meal")
@@ -60,7 +60,7 @@ def main():
     diet_add_parser = diet_subparsers.add_parser("add", aliases=["create"], help="Add a new diet plan")
     nutdiet.configure_add_parser(diet_add_parser)
     # Diet get subcommand
-    diet_get_parser = diet_subparsers.add_parser("get", aliases=["show"], help="Get diet plan information")
+    diet_get_parser = diet_subparsers.add_parser("get", aliases=["show", "list"], help="Get diet plan information")
     nutdiet.configure_get_parser(diet_get_parser)
     # Diet remove subcommand
     diet_remove_parser = diet_subparsers.add_parser("remove", aliases=["delete", "rm"], help="Remove a diet plan")
