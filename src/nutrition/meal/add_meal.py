@@ -18,6 +18,12 @@ def get_user_input():
 
     # Basic information
     name = input("Meal name: ").strip()
+    portions = input("Number of portions [1]: ").strip() or 1
+    try:
+        portions = int(portions)
+    except ValueError:
+        print("Invalid number of portions, using 1")
+        portions = 1
 
     print("\nAdd items to the meal:")
     items = []
@@ -34,6 +40,7 @@ def get_user_input():
         quantity_input = input("  Quantity: ").strip()
         try:
             quantity = float(quantity_input) if quantity_input else 1.0
+            quantity /= portions
         except ValueError:
             print("  Invalid quantity, using 1.0")
             quantity = 1.0
